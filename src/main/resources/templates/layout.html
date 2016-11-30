@@ -1,0 +1,33 @@
+<!-- Basic layout for page -->
+<!-- Contains head info (adjustable title), header and navigation bar for app -->
+
+<!DOCTYPE html>
+<html>
+<head th:fragment="head(page_title)" lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+    <meta charset="utf-8"/>
+    <meta http-equiv="x-ua-compatible" content="ie=edge"/>
+    <title th:text="'InstaTeam | ' + ${page_title}">InstaTeam</title>
+    <link href='https://fonts.googleapis.com/css?family=Inconsolata:400,700' rel='stylesheet' type='text/css'/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/normalize.css}" />
+    <link rel="stylesheet" th:href="@{/site.css}" />
+</head>
+<body>
+    <header th:fragment="header">
+        <div class="container">
+            <div class="site-header">
+                <a class="logo" th:href="@{/}">InstaTeam</a>
+                <a class="new-project button icon-left" href="#"><i class="material-icons">add</i> New Project</a>
+            </div>
+        </div>
+    </header>
+    <nav th:fragment="nav">
+        <ul>
+            <li class="selected"><a th:href="@{/}">Projects</a></li>
+            <li><a href="collaborators.html">Collaborators</a></li>
+            <li><a href="roles.html">Roles</a></li>
+        </ul>
+    </nav>
+</body>
+</html>
