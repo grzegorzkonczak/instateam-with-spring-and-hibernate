@@ -1,6 +1,21 @@
 group 'com.checkrise'
 version '1.0-SNAPSHOT'
 
+// Include the Spring Boot plugin
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
+    }
+}
+
+// Apply the Spring Boot plugin
+apply plugin: 'org.springframework.boot'
+
 apply plugin: 'java'
 
 sourceCompatibility = 1.8
@@ -11,4 +26,9 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '1.4.2.RELEASE'
+    compile group: 'org.springframework', name: 'spring-orm', version: '4.3.4.RELEASE'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.5.Final'
+    compile group: 'org.apache.tomcat', name: 'tomcat-dbcp', version: '8.5.8'
+    compile group: 'com.h2database', name: 'h2', version: '1.4.193'
 }
