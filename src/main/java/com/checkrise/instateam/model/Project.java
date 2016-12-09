@@ -26,7 +26,7 @@ public class Project {
   @NotNull
   private String description;
 
-  private String status;
+  private Status status;
 
   @ManyToMany
   private List<Role> rolesNeeded;
@@ -61,11 +61,11 @@ public class Project {
     this.description = description;
   }
 
-  public String getStatus() {
+  public Status getStatus() {
     return status;
   }
 
-  public void setStatus(String status) {
+  public void setStatus(Status status) {
     this.status = status;
   }
 

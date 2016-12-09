@@ -7,12 +7,17 @@
         <section>
             <div class="container wrapper">
                 <div class="project-list">
+                    <!-- Displays message when there are no projects to display -->
+                    <div th:if="${#lists.isEmpty(projects)}" class="project">
+                        <h2>No projects created yet...</h2>
+                        <p>Use New Project button in upper right corner to add new project.</p>
+                    </div>
                     <!-- Displays all projects passed in by controller -->
                     <div th:each="project : ${projects}" class="project">
-                        <h2><a th:href="@{|/projects/${project.id}|}" th:text="${project.name}">Website Project</a></h2>
-                        <p th:text="${project.description}">Design and build a custom website</p>
-                        <!--TODO: Add th:class tag after re-implementing status in project model -->
-                        <span class="tag active">Active</span>
+                        <h2><a th:href="@{|/projects/${project.id}|}" th:text="${project.name}"></a></h2>
+                        <p th:text="${project.description}"></p>
+                        <span th:class="${project.status}"
+                              th:text="${#strings.capitalizeWords(project.status)}"></span>
                     </div>
                 </div>
             </div>
