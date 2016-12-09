@@ -6,8 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /*
   Represents a person who is candidate
@@ -21,6 +21,7 @@ public class Collaborator {
   private Long id;
 
   @NotNull
+  @Size(min = 3)
   private String name;
 
   // Many Collaborators can have one Role
