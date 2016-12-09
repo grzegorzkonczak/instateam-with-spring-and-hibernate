@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="layout :: head('Roles')"></head>
+<body>
+<header th:replace="layout :: header"></header>
+<nav th:replace="layout :: nav('Collaborators')"></nav>
+<section>
+    <div class="container wrapper">
+        <form method="post" th:action="@{/collaborators}" th:object="${collaborator}">
+            <h2>Manage Collaborators</h2>
+            <div th:if="${#lists.isEmpty(collaborators)}" class="project">
+                <h2>No collaborators created yet...</h2>
+                <p>Add new collaborators below.</p>
+            </div>
+            <ul class="checkbox-list">
+                <li th:each="collaborator : ${collaborators}">
+                    <span class="primary" th:text="${collaborator.name}"></span>
+                    <div class="custom-select">
+                        <span class="dropdown-arrow"></span>
+                        <select>
+                            <option th:each="role : ${roles}" value="${role}" th:text="${role}"
+                            th:selected="((${role} == ${collaborator.role}) ? 'true' : 'false')"></option>
+                        </select>
+                    </div>
+                </li>
+            </ul>
+            <div class="actions add-new-collaborator">
+                <input type="text" th:field="*{name}" placeholder="Name..."/>
+                <div class="custom-select">
+                    <span class="dropdown-arrow"></span>
+                    <select>
+                        <option value="#" disabled="true" selected="true">Role...</option>
+                        <option th:each="role : ${roles}" th:field="*{role}" value="${role}" th:text="${role}"></option>
+                    </select>
+                </div>
+                <input type="submit" class="button" th:href="@{/collaborators}" value="Add"/>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>
