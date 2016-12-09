@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /*
  Represents the roles each project could
@@ -18,6 +19,7 @@ public class Role {
   private Long id;
 
   @NotNull
+  @Size(min = 2)
   private String name;
 
   public Role() {}
