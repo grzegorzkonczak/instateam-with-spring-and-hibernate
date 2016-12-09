@@ -3,7 +3,7 @@
 <head th:replace="layout :: head('Roles')"></head>
 <body>
 <header th:replace="layout :: header"></header>
-<nav th:replace="layout :: nav"></nav>
+<nav th:replace="layout :: nav('Roles')"></nav>
 <section>
     <div class="container wrapper">
         <form method="post" th:action="@{/roles}" th:object="${role}">
@@ -23,7 +23,7 @@
             <!-- Add new role to database -->
             <div class="actions add-new-role">
                 <input type="text" th:field="*{name}" placeholder="New Role..."
-                       minlength="2" required/>
+                       minlength="2" required="true"/>
                 <input class="button" type="submit" value="Add"/>
             </div>
         </form>

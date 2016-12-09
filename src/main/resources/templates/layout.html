@@ -22,12 +22,11 @@
             </div>
         </div>
     </header>
-    <nav th:fragment="nav">
+    <nav th:fragment="nav(selection)">
         <ul>
-            <!-- TODO: implement dynamic changing of selection indicator based on user current location -->
-            <li class="selected"><a th:href="@{/}">Projects</a></li>
-            <li><a href="collaborators.html">Collaborators</a></li>
-            <li><a th:href="@{/roles}">Roles</a></li>
+            <li th:class="( (${selection} == 'Projects')? 'selected' : '')"><a th:href="@{/}">Projects</a></li>
+            <li th:class="( (${selection} == 'Collaborators')? 'selected' : '')"><a th:href="@{/collaborators}">Collaborators</a></li>
+            <li th:class="( (${selection} == 'Roles')? 'selected' : '')"><a th:href="@{/roles}">Roles</a></li>
         </ul>
     </nav>
 </body>
