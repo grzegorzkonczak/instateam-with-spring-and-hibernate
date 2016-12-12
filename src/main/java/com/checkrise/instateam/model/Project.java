@@ -25,7 +25,7 @@ public class Project {
   @Enumerated
   private Status status;
 
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.EAGER)
   private List<Role> rolesNeeded;
 
   @ManyToMany

@@ -1,11 +1,9 @@
 package com.checkrise.instateam.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 /*
  Represents the roles each project could
@@ -21,6 +19,9 @@ public class Role {
   @NotNull
   @Size(min = 2)
   private String name;
+
+  @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
+  private List<Collaborator> collaborators;
 
   public Role() {}
 
@@ -39,6 +40,14 @@ public class Role {
   public void setName(String name) {
     this.name = name;
   }
+
+    public List<Collaborator> getCollaborators() {
+        return collaborators;
+    }
+
+    public void setCollaborators(List<Collaborator> collaborators) {
+        this.collaborators = collaborators;
+    }
 
     @Override
     public String toString() {

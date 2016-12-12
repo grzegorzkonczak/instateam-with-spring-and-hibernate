@@ -1,5 +1,6 @@
 package com.checkrise.instateam.controller;
 
+import com.checkrise.instateam.model.Collaborator;
 import com.checkrise.instateam.model.Project;
 import com.checkrise.instateam.model.Role;
 import com.checkrise.instateam.model.Status;
@@ -9,12 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -72,12 +76,22 @@ public class ProjectController {
             return "redirect:/";
         }
 
-        // add right neededRoles to project
+        // add proper neededRoles to project
         project.setRolesNeeded(rolesNeeded);
 
         // if no errors - persist new entry
         projectService.save(project);
         return "redirect:/";
-
     }
+
+    // View project details
+    @RequestMapping("/projects/{projectId}")
+    public String projectDetails(@PathVariable Long projectId, Model model) {
+        // Get project whose id is projectId
+        Project project = projectService.findById(projectId);
+
+        model.addAttribute("project", project);
+        return "project/details";
+    }
+
 }

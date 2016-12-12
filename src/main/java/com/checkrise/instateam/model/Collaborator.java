@@ -54,4 +54,9 @@ public class Collaborator {
   public void setRole(Role role) {
     this.role = role;
   }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
