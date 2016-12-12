@@ -20,7 +20,7 @@ public class Role {
   @Size(min = 2)
   private String name;
 
-  @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
+  @OneToMany(fetch = FetchType.EAGER)
   private List<Collaborator> collaborators;
 
   public Role() {}
@@ -53,4 +53,24 @@ public class Role {
     public String toString() {
         return name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Role role = (Role) o;
+
+        if (id != null ? !id.equals(role.id) : role.id != null) return false;
+        return name != null ? name.equals(role.name) : role.name == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
+    }
 }
+
+
