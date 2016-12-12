@@ -190,6 +190,10 @@ strong {
 .tag.archived {
 	background: #bbbab9;
 }
+
+.tag.unassigned {
+	background: #1919ff;
+}
 .list-item {
 	border-top: 1px solid #e1e0e0;
 	padding: 18px 35px;

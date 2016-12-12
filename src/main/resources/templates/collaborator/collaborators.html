@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head th:replace="layout :: head('Roles')"></head>
+<head th:replace="layout :: head('Collaborators')"></head>
 <body>
 <header th:replace="layout :: header"></header>
 <nav th:replace="layout :: nav('Collaborators')"></nav>
@@ -35,7 +35,7 @@
                         </div>
                     </select>
                 </div>
-                <input type="submit" class="button" th:href="@{/collaborators}" value="Add"/>
+                <input type="submit" class="button" value="Add"/>
             </div>
         </form>
     </div>
