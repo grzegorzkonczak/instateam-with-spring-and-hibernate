@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<!--/* Shows header "InstaTeam : argument" */-->
+<head th:replace="layout :: head('Project Collaborators')"></head>
+<body>
+<header th:replace="layout :: header"></header>
+<!--/* Navigation: should highlight "Projects" tab */-->
+<nav th:replace="layout :: nav('Projects')"></nav>
+<section>
+    <div class="container wrapper">
+        <!--/* save collaborators form */-->
+        <form method="post"
+              th:action="@{|/projects/save-collaborators|}"
+              th:object="${project}">
+            <!--/* Hidden id is needed, so that later we can get
+                   other project data from project in database, see
+                   controller for more. The rest fields are not needed
+                   because they are changed on the other page, so
+                   all we need from used is collaborators here, which
+                   is logical too.
+            */-->
+            <input type="hidden" th:field="*{id}"/>
+            <!--/* Label for Edit collaborators */-->
+            <label th:text="|Edit Collaborators: ${project.name}|">
+                Edit Collaborators: Project Name
+            </label>
+            <!--/* input with collaborators for roles */-->
+            <ul class="checkbox-list">
+                <!--/* in every list item we use one role from
+                               roles needed
+                */-->
+                <li th:each="role : *{rolesNeeded}">
+                    <!--/* print each role name */-->
+                    <span class="primary" th:text="${role.name}"></span>
+                    <div class="custom-select">
+                        <!--/* dropdown arrow */-->
+                        <span class="dropdown-arrow"></span>
+                        <!--/* collaborators[index].id is field to be
+                               filled. the rest will be null
+                        */-->
+                        <select class="not-assigned"
+                                th:field="*{collaborators[__${roleStat.index}__].id}">
+                            <!--/* We choose from possible collaborators
+                                   that have this role. Then
+                                   We add collaborator with right
+                                   collaborator.id of picked
+                                   collaborator
+                                   to our projects collaborator[i].id
+                                   the rest of the fields will be null
+                            */-->
+                            <option class="not-assigned" value="0">
+                                [Unassigned]
+                            </option>
+                            <option class="active"
+                                    th:each="collaborator : ${collaborators}"
+                                    th:value="${collaborator.id}"
+                                    th:text="${collaborator.name}"
+                                    th:if="${collaborator.role.id} == ${role.id}">
+                                Collaborator Name
+                            </option>
+                        </select>
+                    </div>
+                </li>
+            </ul>
+            <div class="actions">
+                <!--/* Submit button */-->
+                <input type="submit" value="Save" class="button"/>
+                <!--/* Cancel button */-->
+                <a th:href="@{/}" class="button button-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>

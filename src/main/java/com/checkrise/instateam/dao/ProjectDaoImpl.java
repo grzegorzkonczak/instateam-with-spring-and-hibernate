@@ -1,6 +1,7 @@
 package com.checkrise.instateam.dao;
 
 import com.checkrise.instateam.model.Project;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
-public class ProjectDaoImpl implements ProjectDao{
+public class ProjectDaoImpl implements ProjectDao {
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -44,6 +45,10 @@ public class ProjectDaoImpl implements ProjectDao{
 
         // Get project
         Project project = session.get(Project.class, id);
+
+        // Initialize collections
+        Hibernate.initialize(project.getCollaborators());
+        Hibernate.initialize(project.getRolesNeeded());
 
         // Close session
         session.close();

@@ -2,7 +2,6 @@ package com.checkrise.instateam.dao;
 
 
 import com.checkrise.instateam.model.Role;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,60 +13,61 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
-public class RoleDaoImpl implements RoleDao{
-  @Autowired
-  private SessionFactory sessionFactory;
+public class RoleDaoImpl implements RoleDao {
+    @Autowired
+    private SessionFactory sessionFactory;
 
-  @Override
-  @SuppressWarnings("unchecked")
-  public List<Role> findAll() {
-    // Open session
-    Session session = sessionFactory.openSession();
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Role> findAll() {
+        // Open session
+        Session session = sessionFactory.openSession();
 
-    //Get Criteria Builder
-    CriteriaBuilder builder = session.getCriteriaBuilder();
+        //Get Criteria Builder
+        CriteriaBuilder builder = session.getCriteriaBuilder();
 
-    //Create Criteria
-    CriteriaQuery<Role> criteria = builder.createQuery(Role.class);
-    Root<Role> contactRoot = criteria.from(Role.class);
-    criteria.select(contactRoot);
+        //Create Criteria
+        CriteriaQuery<Role> criteria = builder.createQuery(Role.class);
+        Root<Role> contactRoot = criteria.from(Role.class);
+        criteria.select(contactRoot);
 
-    //Use criteria to query with session to fetch all Roles
-    List<Role> roles = session.createQuery(criteria).getResultList();
+        //Use criteria to query with session to fetch all Roles
+        List<Role> roles = session.createQuery(criteria).getResultList();
 
-    // Close session
-    session.close();
-    return roles;
-  }
+        // Close session
+        session.close();
+        return roles;
+    }
 
-  @Override
-  public Role findById(Long id) {
-    // Open session
-    Session session = sessionFactory.openSession();
+    @Override
+    public Role findById(Long id) {
+        // Open session
+        Session session = sessionFactory.openSession();
 
-    // Get role
-    Role role = session.get(Role.class, id);
+        // Get role
+        Role role = session.get(Role.class, id);
 
-    // Close session
-    session.close();
-    return role;
-  }
 
-  @Override
-  public void save(Role role) {
-    // Open session
-    Session session = sessionFactory.openSession();
+        // Close session
+        session.close();
+        return role;
+    }
 
-    // Begin transaction
-    session.beginTransaction();
+    @Override
+    public void save(Role role) {
+        // Open session
+        Session session = sessionFactory.openSession();
 
-    // Save/Update Role
-    session.saveOrUpdate(role);
+        // Begin transaction
+        session.beginTransaction();
 
-    // Commit transaction
-    session.getTransaction().commit();
+        // Save/Update Role
+        session.saveOrUpdate(role);
 
-    // Close session
-    session.close();
-  }
+        // Commit transaction
+        session.getTransaction().commit();
+
+        // Close session
+        session.close();
+    }
 }

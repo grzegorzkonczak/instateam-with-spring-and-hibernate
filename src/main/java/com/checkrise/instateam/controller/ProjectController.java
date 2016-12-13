@@ -1,8 +1,10 @@
 package com.checkrise.instateam.controller;
 
+import com.checkrise.instateam.model.Collaborator;
 import com.checkrise.instateam.model.Project;
 import com.checkrise.instateam.model.Role;
 import com.checkrise.instateam.model.Status;
+import com.checkrise.instateam.service.CollaboratorService;
 import com.checkrise.instateam.service.ProjectService;
 import com.checkrise.instateam.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class ProjectController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private CollaboratorService collaboratorService;
 
     // Home page - index all projects
     @RequestMapping("/")
@@ -151,4 +156,95 @@ public class ProjectController {
         return synchronizedRolesNeededListWithNulls;
     }
 
+
+    // Edit project collaborators
+    @RequestMapping("/projects/{projectId}/collaborators")
+    public String editProjectCollaboratorsForm(@PathVariable Long projectId, Model model) {
+        // Get all Collaborators from database
+        List<Collaborator> collaborators = collaboratorService.findAll();
+        model.addAttribute("collaborators", collaborators);
+
+        // Get project whose id is projectId
+        Project project = projectService.findById(projectId);
+
+        // here we synchronize collaborators with roles needed, so that user
+        // can see assigned collaborators for his roles.
+        List<Collaborator> collaboratorsSynchronized =
+                generateSynchronizedWithRolesNeededCollaboratorsList(project);
+        project.setCollaborators(collaboratorsSynchronized);
+
+        // add project to model
+        model.addAttribute("project", project);
+
+        return "project/editCollaborators";
+    }
+
+    private List<Collaborator> generateSynchronizedWithRolesNeededCollaboratorsList(Project project) {
+        // list of collaborators synchronized with roles needed list by
+        // index and size: so that
+        // Role(1) -> null
+        // Role(2) --> Collaborator(withRole(2))
+        // for case where rolesNeeded are: [Role(1), Role(2)]
+        // and project.collaborators are: [Collaborator(withRole(2))]
+        // This list in opposite to project.collaborators will look like
+        // [null, Collaborator(withRole(2))]
+        List<Collaborator> projectCollaboratorsWithNullsForUnAssigned =
+                new ArrayList<>();
+
+        // cycle through roles needed
+        for (Role roleNeeded : project.getRolesNeeded()) {
+            boolean collaboratorIsAssigned = false;
+
+            // cycle through projectCollaborators
+            for (Collaborator projectCollaborator : project.getCollaborators()) {
+
+                // if collaborator is assigned to this role: we check by
+                // unique ids
+                if (projectCollaborator.getRole().getId() ==
+                        roleNeeded.getId()) {
+
+                    // we assign collaborator
+                    collaboratorIsAssigned = true;
+
+                    // add this collaborated synchronized with role
+                    projectCollaboratorsWithNullsForUnAssigned
+                            .add(projectCollaborator);
+
+                    // break the cycle
+                    break;
+                }
+            }
+
+            // if after cycling through all collaborators we found that
+            // no collaborator was assigned for this roles, we add
+            // null at this index in our new array
+            if (!collaboratorIsAssigned) {
+                projectCollaboratorsWithNullsForUnAssigned.add(null);
+            }
+        }
+        return projectCollaboratorsWithNullsForUnAssigned;
+    }
+
+    // Save edited collaborators for project with passed id to database
+    @RequestMapping(value = "/projects/save-collaborators", method = RequestMethod.POST)
+    public String saveCollaboratorsForProject(@Valid Project projectWithIdAndCollaborators, BindingResult result) {
+        // Get project object from database defined by passed id from form
+        Project project = projectService.findById(projectWithIdAndCollaborators.getId());
+
+        // Create empty collaborators list
+        List<Collaborator> collaboratorsToAdd = new ArrayList<>();
+
+        // Populate list by using list of collaborators id's selected by user
+        for (Collaborator collaborator : projectWithIdAndCollaborators.getCollaborators()) {
+            collaboratorsToAdd.add(collaboratorService.findById(collaborator.getId()));
+        }
+
+        // Set new collaborators in project
+        project.setCollaborators(collaboratorsToAdd);
+
+        // Persist project
+        projectService.save(project);
+
+        return "redirect:/projects/" + project.getId();
+    }
 }

@@ -2,8 +2,10 @@ package com.checkrise.instateam.model;
 
 
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 /*
   Represents a project for which a
@@ -12,24 +14,32 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Project {
 
+  // primary key
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  // project name
   @NotNull
   private String name;
 
-  @NotNull
+  // project description: for now it simply cannot be empty or null
+  // can be changed later
+  @NotNull(message = "Description cannot be empty")
   private String description;
 
-  @Enumerated
-  private Status status;
-
-  @ManyToMany(fetch = FetchType.EAGER)
+  // project roles, are fetched lazily when `findById` method is called
+  @ManyToMany(fetch = FetchType.LAZY)
   private List<Role> rolesNeeded;
 
-  @ManyToMany
+  // project collaborators, are fetched lazily when `findById` method is called
+  @ManyToMany(fetch = FetchType.LAZY)
   private List<Collaborator> collaborators;
+
+  // Project status is enum class, see definition, can be ACTIVE,
+  // UNASSIGNED, or ARCHIVED. In table it comes as INTEGER
+  @Enumerated
+  private Status status;
 
 
   public Project() {}
