@@ -58,6 +58,7 @@ public class ProjectController {
     }
 
     // Add project to database or update existing project
+    // TODO: Fix Bug -> collaborators being unassigned from project after modifying rolesNeeded for project
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String addEditProject(@Valid Project project, BindingResult result) {
         // Get rolesNeeded from project to validate if there are any roles selected
@@ -92,6 +93,12 @@ public class ProjectController {
     public String projectDetails(@PathVariable Long projectId, Model model) {
         // Get project whose id is projectId
         Project project = projectService.findById(projectId);
+
+        // here we synchronize collaborators with roles needed, so that user
+        // can see assigned collaborators for his roles.
+        List<Collaborator> collaboratorsSynchronized =
+                generateSynchronizedWithRolesNeededCollaboratorsList(project);
+        project.setCollaborators(collaboratorsSynchronized);
 
         model.addAttribute("project", project);
         return "project/details";

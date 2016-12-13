@@ -17,8 +17,16 @@
                 <h3>Roles &amp; Collaborators</h3>
                 <div th:each="role : ${project.rolesNeeded}" class="list-item">
                     <span class="primary" th:text="${role.name}"></span>
-                    <!-- TODO: display collaborators assigned to specific roles in specific project -->
-                    <!-- <span class="secondary" th:text="${project.collaborators}"></span> -->
+                    <span class="secondary"
+                          th:text="${project.collaborators[__${roleStat.index}__].name}"
+                          th:if="${project.collaborators[__${roleStat.index}__]} != null and
+                          ${project.collaborators[__${roleStat.index}__].role.id} == ${role.id}">
+
+                    </span>
+                    <span class="secondary"
+                          th:if="${project.collaborators[__${roleStat.index}__]} == null">
+                        [Unassigned]
+                    </span>
                 </div>
             </div>
             <div class="actions">
