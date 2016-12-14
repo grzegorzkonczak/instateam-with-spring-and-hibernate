@@ -116,6 +116,11 @@ nav ul li.selected a {
 	outline: 0;
 }
 
+.button.edit-button {
+    float: right;
+    margin: -13px 10px 10px 0px;
+}
+
 
 
 /* ==========================================================================

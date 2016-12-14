@@ -9,14 +9,17 @@
         <form method="post" th:action="@{/roles}" th:object="${role}">
             <h2>Manage Roles</h2>
             <div>
+                <!-- Displays message when no roles where added yet -->
                 <div th:if="${#lists.isEmpty(roles)}" class="project">
                     <h2>No roles created yet...</h2>
                     <p>Add new roles below.</p>
                 </div>
                 <ul class="checkbox-list">
-                    <!-- Displays all roles passed in by controller -->
-                    <li th:each="role : ${roles}">
+                    <!-- Displays all roles passed in by controller and allows for editing -->
+                    <li th:each="role : ${roles}" th:object="${role}">
                         <span th:text="${role.name}" class="primary"></span>
+                        <a th:href="@{|/roles/${role.id}/details|}"
+                                class="button edit-button">Edit</a>
                     </li>
                 </ul>
             </div>
