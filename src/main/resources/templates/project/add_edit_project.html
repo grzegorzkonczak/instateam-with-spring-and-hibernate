@@ -58,6 +58,50 @@
             </div>
             <div class="actions">
                 <input type="hidden" th:field="*{id}" th:value="${project.id}"/>
+
+                <!--/*
+                Create hidden list with collaborators to preserve
+                changes when user edits project.
+                Store list in created
+                */-->
+                <ul hidden="hidden">
+                    <li th:each="collaborator, roleStat : *{collaborators}" type="hidden">
+                        <!--/*
+                             here we set selected collaborator id of
+                             collaborators. Without this id will be 0
+                        */-->
+                        <select hidden="hidden" th:field="*{collaborators[__${roleStat.index}__].id}">
+                            <option th:value="${collaborator.id}"></option>
+                        </select>
+                        <!--/*
+                             here we set selected collaborator name of
+                             collaborators. Without this name will be null
+                        */-->
+                        <select hidden="hidden" th:field="*{collaborators[__${roleStat.index}__].name}">
+                            <option th:value="${collaborator.name}"></option>
+                        </select>
+                        <!--/*
+                             here we set selected collaborator role of
+                             collaborators. Without this role will be null
+                        */-->
+                        <select hidden="hidden" th:field="*{collaborators[__${roleStat.index}__].role.id}">
+                        <option th:value="${collaborator.role.id}"></option>
+                        </select>
+                        <select hidden="hidden" th:field="*{collaborators[__${roleStat.index}__].role.name}">
+                            <option th:value="${collaborator.role.name}"></option>
+                        </select>
+                        <select hidden="hidden" th:field="*{collaborators[__${roleStat.index}__].role}">
+                            <option th:value="${collaborator.role}"></option>
+                        </select>
+                        <!--/* Main input where we attach all
+                               Collaborators to one of the collaborators elements.
+                        */-->
+                        <input type="hidden"
+                               th:field="*{collaborators[__${roleStat.index}__]}"
+                               th:value="${project.collaborators}"/>
+                    </li>
+                </ul>
+
                 <input type="submit" value="Save" class="button"/>
                 <a th:href="@{/}" class="button button-secondary">Cancel</a>
             </div>

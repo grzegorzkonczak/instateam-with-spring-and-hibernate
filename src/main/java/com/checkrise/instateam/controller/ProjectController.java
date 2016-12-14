@@ -54,11 +54,11 @@ public class ProjectController {
 
         // Add empty new project object to model
         model.addAttribute("project", new Project());
+
         return "project/add_edit_project";
     }
 
     // Add project to database or update existing project
-    // TODO: Fix Bug -> collaborators being unassigned from project after modifying rolesNeeded for project
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String addEditProject(@Valid Project project, BindingResult result) {
         // Get rolesNeeded from project to validate if there are any roles selected
@@ -72,6 +72,20 @@ public class ProjectController {
                     "Please select at least one role");
         }
 
+        // Get old collaborators from project and cross check
+        // with any changes to rolesNeeded in project
+        List<Collaborator> oldCollaborators = project.getCollaborators();
+        List<Collaborator> newCollaborators = new ArrayList<>();
+
+        // check if collaborator from old list has role
+        // that exist in potentially modified rolesNeeded list
+        // if yes - add that collaborator to newCollaborators
+        for (Collaborator collaborator : oldCollaborators) {
+            if (rolesNeeded.contains(collaborator.getRole())){
+                newCollaborators.add(collaborator);
+            }
+        }
+
         // if user entered invalid input do not persist entry
         if (result.hasFieldErrors("name")
                 || result.hasFieldErrors("description")
@@ -82,6 +96,9 @@ public class ProjectController {
 
         // add proper neededRoles to project
         project.setRolesNeeded(rolesNeeded);
+
+        // Assign new collaborators to project
+        project.setCollaborators(newCollaborators);
 
         // if no errors - persist entry
         projectService.save(project);
@@ -134,6 +151,7 @@ public class ProjectController {
                 ));
 
         model.addAttribute("project", project);
+
         return "project/add_edit_project";
     }
 
