@@ -6,28 +6,54 @@
 <nav th:replace="layout :: nav('Collaborators')"></nav>
 <section>
     <div class="container wrapper">
-        <form method="post" th:action="@{/collaborators}" th:object="${collaborator}">
+        <!-- Form for updating all collaborator roles -->
+        <form method="post" th:action="@{/collaborators/save}" th:object="${project}">
             <h2>Manage Collaborators</h2>
-            <div th:if="${#lists.isEmpty(collaborators)}" class="project">
+            <!-- Message displayed when there are no collaborators yet -->
+            <div th:if="${#lists.isEmpty(project.collaborators)}" class="project">
                 <h2>No collaborators created yet...</h2>
                 <p>Add new collaborators below.</p>
             </div>
+            <!-- List of all collaborators with roles to choose -->
             <ul class="checkbox-list">
-                <li th:each="collaborator : ${collaborators}">
+                <li th:each="collaborator, stat : *{collaborators}">
+                    <!-- Set collaborator id in collaborators field of project object -->
+                    <select hidden="hidden" th:field="*{collaborators[__${stat.index}__].id}">
+                        <option th:value="${collaborator.id}"></option>
+                    </select>
+                    <!-- Set collaborator name in collaborators field of project object -->
+                    <select hidden="hidden" th:field="*{collaborators[__${stat.index}__].name}">
+                        <option th:value="${collaborator.name}"></option>
+                    </select>
+                    <!-- Display collaborator name -->
                     <span class="primary" th:text="${collaborator.name}"></span>
                     <div class="custom-select">
                         <span class="dropdown-arrow"></span>
-                        <select>
-                            <option th:each="role : ${roles}" th:value="${role}" th:text="${role}"
-                            th:selected="((${role.id} == ${collaborator.role.id}) ? 'selected' : 'false')"></option>
+                        <!-- Display all roles for user to choose for collaborator -->
+                        <select th:field="*{collaborators[__${stat.index}__].role.id}">
+                            <!--/* Options for collaborators with
+                                   roles that will be saved
+                            */-->
+                            <option th:each="role : *{rolesNeeded}"
+                                    th:value="${role.id}"
+                                    th:text="${role.name}"
+                                    th:selected="${role.id == collaborator.role.id}"
+                            >
+                            </option>
                         </select>
                     </div>
                 </li>
             </ul>
+            <input class="button save-all" type="submit" value="Save All"/>
+        <!-- Form to save new collaborator with specific role -->
+        </form>
+        <form method="post" th:action="@{/collaborators/add}" th:object="${collaborator}">
             <div class="actions add-new-collaborator">
+                <!-- User created name of collaborator -->
                 <input type="text" th:field="*{name}" placeholder="Name..." required="required" minlength="3"/>
                 <div class="custom-select">
                     <span class="dropdown-arrow"></span>
+                    <!-- Selection of roles for collaborator -->
                     <select th:field="*{role.id}" required="required">
                         <div>
                             <option value="" disabled="disabled" selected="selected">Role...</option>

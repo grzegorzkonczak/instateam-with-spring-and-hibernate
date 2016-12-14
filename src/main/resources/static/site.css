@@ -121,6 +121,10 @@ nav ul li.selected a {
     margin: -13px 10px 10px 0px;
 }
 
+.button.save-all {
+    margin: 6px 10px 10px 0;
+}
+
 
 
 /* ==========================================================================

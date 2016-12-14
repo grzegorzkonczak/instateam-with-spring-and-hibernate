@@ -1,6 +1,7 @@
 package com.checkrise.instateam.controller;
 
 import com.checkrise.instateam.model.Collaborator;
+import com.checkrise.instateam.model.Project;
 import com.checkrise.instateam.model.Role;
 import com.checkrise.instateam.service.CollaboratorService;
 import com.checkrise.instateam.service.RoleService;
@@ -25,21 +26,26 @@ public class CollaboratorController {
     // Collaborators Page - index all collaborators, add collaborator button and fields
     @RequestMapping("/collaborators")
     public String listCollaborators(Model model) {
-        // Add to model all existing collaborators from database
+        // Create list of all existing collaborators from database
         List<Collaborator> collaborators = collaboratorService.findAll();
-        model.addAttribute("collaborators", collaborators);
 
-        // Add to model all existing roles from database
+        // Create list of all existing roles from database
         List<Role> roles = roleService.findAll();
-        model.addAttribute("roles", roles);
 
         // Add to model empty collaborator to create new collaborator by user
         model.addAttribute("collaborator", new Collaborator());
+
+        // Add to model project with all collaborators and all roles
+        Project project = new Project();
+        project.setCollaborators(collaborators);
+        project.setRolesNeeded(roles);
+        model.addAttribute("project", project);
+
         return "collaborator/collaborators";
     }
 
     // Add collaborator to database
-    @RequestMapping(value = "/collaborators", method = RequestMethod.POST)
+    @RequestMapping(value = "/collaborators/add", method = RequestMethod.POST)
     public String addCollaborator(@Valid Collaborator collaborator, BindingResult result) {
         // if user entered invalid input do not persist entry
         if (result.hasErrors()){
@@ -49,5 +55,19 @@ public class CollaboratorController {
         collaboratorService.save(collaborator);
         return "redirect:/collaborators";
 
+    }
+
+    // Save collaborators with roles to database
+    @RequestMapping(value = "/collaborators/save", method = RequestMethod.POST)
+    public String saveCollaborators(@Valid Project project, BindingResult result){
+        // Extract Collaborators from project object
+        List<Collaborator> collaborators = project.getCollaborators();
+
+        // Update collaborators in database
+        for (Collaborator collaborator : collaborators){
+            collaboratorService.save(collaborator);
+        }
+
+        return "redirect:/collaborators";
     }
 }
