@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -58,7 +59,7 @@ public class CollaboratorController {
     }
 
     // Save collaborators with roles to database
-    @RequestMapping(value = "/collaborators/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/collaborators/save-all", method = RequestMethod.POST)
     public String saveCollaborators(@Valid Project project, BindingResult result){
         // Extract Collaborators from project object
         List<Collaborator> collaborators = project.getCollaborators();
@@ -70,4 +71,18 @@ public class CollaboratorController {
 
         return "redirect:/collaborators";
     }
+
+    // Display details/edit page for specific collaborator
+    @RequestMapping("/collaborators/{collaboratorId}/details")
+    public String editCollaboratorForm (@PathVariable Long collaboratorId, Model model){
+        // Add all roles to model
+        List<Role> roles = roleService.findAll();
+        model.addAttribute("roles", roles);
+
+        // Add collaborator to model
+        Collaborator collaborator = collaboratorService.findById(collaboratorId);
+        model.addAttribute("collaborator", collaborator);
+        return "collaborator/details";
+    }
+
 }

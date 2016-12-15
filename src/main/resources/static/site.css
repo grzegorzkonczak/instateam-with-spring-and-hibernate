@@ -125,6 +125,11 @@ nav ul li.selected a {
     margin: 6px 10px 10px 0;
 }
 
+.button.collaborator-edit {
+    width: 85px;
+    margin: 0px 10px 0px 0px;
+}
+
 
 
 /* ==========================================================================

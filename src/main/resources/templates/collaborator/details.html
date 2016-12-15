@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="layout :: head('Collaborator Details')"></head>
+<body>
+<header th:replace="layout :: header"></header>
+<nav th:replace="layout :: nav('Collaborators')"></nav>
+<section>
+    <div class="container wrapper">
+        <form method="post" th:action="@{/collaborators/add}" th:object="${collaborator}">
+            <h2>Edit Collaborator</h2>
+            <!-- Edit collaborator from database -->
+            <div class="actions add-new-collaborator">
+                <!-- Collaborators name -->
+                <input type="text" th:field="*{name}"
+                       minlength="2" required="true"/>
+                <!-- Collaborators role -->
+                <div class="custom-select">
+                    <span class="dropdown-arrow"></span>
+                    <!-- Display all roles for user to choose for collaborator -->
+                    <select th:field="*{role.id}">
+                        <!--/* Options for collaborator with
+                               roles that will be saved
+                        */-->
+                        <option th:each="role : ${roles}"
+                                th:value="${role.id}"
+                                th:text="${role.name}"
+                        >
+                        </option>
+                    </select>
+                </div>
+                <!-- Collaborators id -->
+                <input type="hidden" th:field="*{id}" th:value="*{id}"/>
+            </div>
+            <div class="actions">
+                <input class="button collaborator-edit" type="submit" value="Save"/>
+                <a th:href="@{/collaborators}" class="button button-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>

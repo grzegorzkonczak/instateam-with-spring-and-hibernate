@@ -7,7 +7,7 @@
 <section>
     <div class="container wrapper">
         <!-- Form for updating all collaborator roles -->
-        <form method="post" th:action="@{/collaborators/save}" th:object="${project}">
+        <form method="post" th:action="@{/collaborators/save-all}" th:object="${project}">
             <h2>Manage Collaborators</h2>
             <!-- Message displayed when there are no collaborators yet -->
             <div th:if="${#lists.isEmpty(project.collaborators)}" class="project">
@@ -25,8 +25,10 @@
                     <select hidden="hidden" th:field="*{collaborators[__${stat.index}__].name}">
                         <option th:value="${collaborator.name}"></option>
                     </select>
-                    <!-- Display collaborator name -->
-                    <span class="primary" th:text="${collaborator.name}"></span>
+                    <!-- Display collaborator name and link it with details page of collaborator -->
+                    <a th:href="@{|/collaborators/${collaborator.id}/details|}">
+                        <span class="primary" th:text="${collaborator.name}"></span>
+                    </a>
                     <div class="custom-select">
                         <span class="dropdown-arrow"></span>
                         <!-- Display all roles for user to choose for collaborator -->
