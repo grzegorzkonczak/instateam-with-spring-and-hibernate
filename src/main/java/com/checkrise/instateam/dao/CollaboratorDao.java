@@ -4,8 +4,7 @@ import com.checkrise.instateam.model.Collaborator;
 
 import java.util.List;
 
-public interface CollaboratorDao {
-    List<Collaborator> findAll();
-    Collaborator findById(Long id);
-    void save(Collaborator collaborator);
+// For now generic dao covers all needed methods (save, findById, findAll)
+public interface CollaboratorDao extends GenericDao<Collaborator> {
+
 }

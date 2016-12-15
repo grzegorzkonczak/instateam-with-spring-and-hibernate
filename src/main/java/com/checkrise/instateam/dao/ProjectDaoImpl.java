@@ -12,31 +12,12 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
+// Generic dao covers methods save and findAll, only difference is in findById (collection initialization)
 @Repository
-public class ProjectDaoImpl implements ProjectDao {
+public class ProjectDaoImpl extends GenericDaoImpl<Project> implements ProjectDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    @Override
-    public List<Project> findAll() {
-        // Open session
-        Session session = sessionFactory.openSession();
-
-        //Get Criteria Builder
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-
-        //Create Criteria
-        CriteriaQuery<Project> criteria = builder.createQuery(Project.class);
-        Root<Project> contactRoot = criteria.from(Project.class);
-        criteria.select(contactRoot);
-
-        //Use criteria to query with session to fetch all Projects
-        List<Project> projects = session.createQuery(criteria).getResultList();
-
-        // Close session
-        session.close();
-        return projects;
-    }
 
     @Override
     public Project findById(Long id) {
@@ -55,21 +36,4 @@ public class ProjectDaoImpl implements ProjectDao {
         return project;
     }
 
-    @Override
-    public void save(Project project) {
-        // Open session
-        Session session = sessionFactory.openSession();
-
-        // Begin transaction
-        session.beginTransaction();
-
-        // Save/Update Project
-        session.saveOrUpdate(project);
-
-        // Commit transaction
-        session.getTransaction().commit();
-
-        // Close session
-        session.close();
-    }
 }

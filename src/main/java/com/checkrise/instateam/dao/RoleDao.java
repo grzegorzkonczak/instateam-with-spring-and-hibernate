@@ -5,8 +5,6 @@ import com.checkrise.instateam.model.Role;
 
 import java.util.List;
 
-public interface RoleDao {
-  List<Role> findAll();
-  Role findById(Long id);
-  void save(Role role);
+// For now generic dao covers all needed methods (save, findById, findAll)
+public interface RoleDao extends GenericDao<Role> {
 }

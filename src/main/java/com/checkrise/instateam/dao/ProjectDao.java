@@ -5,8 +5,7 @@ import com.checkrise.instateam.model.Project;
 
 import java.util.List;
 
-public interface ProjectDao {
-    List<Project> findAll();
-    Project findById(Long id);
-    void save(Project project);
+// For now generic dao covers all needed methods (save, findById, findAll)
+public interface ProjectDao extends GenericDao<Project> {
+
 }
