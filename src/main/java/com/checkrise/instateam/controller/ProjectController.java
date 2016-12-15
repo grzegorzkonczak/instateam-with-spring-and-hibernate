@@ -20,6 +20,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,10 @@ public class ProjectController {
     @RequestMapping("/")
     public String listProjects(Model model) {
         List<Project> projects = projectService.findAll();
+        // Sort project list to display projects in order of creating date
+        projects = projects.stream()
+                .sorted(Comparator.comparing(Project::getCreationDate))
+                .collect(Collectors.toList());
 
         model.addAttribute("projects", projects);
         return "project/index";
