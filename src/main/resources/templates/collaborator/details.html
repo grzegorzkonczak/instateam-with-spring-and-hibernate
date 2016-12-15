@@ -33,6 +33,7 @@
             </div>
             <div class="actions">
                 <input class="button collaborator-edit" type="submit" value="Save"/>
+                <a class="button collaborator-delete" th:href="@{|/collaborators/*{id}/delete|}">Delete</a>
                 <a th:href="@{/collaborators}" class="button button-secondary">Cancel</a>
             </div>
         </form>

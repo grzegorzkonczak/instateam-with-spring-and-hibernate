@@ -7,7 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-// Generic dao covers methods save and findAll, only difference is in findById (collection initialization)
+// Generic dao covers methods save and findAll
 @Repository
 public class ProjectDaoImpl extends GenericDaoImpl<Project> implements ProjectDao {
     @Autowired

@@ -12,8 +12,26 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
-// For now generic dao covers all needed methods (save, findById, findAll)
+// Generic dao covers all basic methods (save, findById, findAll)
 @Repository
 public class CollaboratorDaoImpl extends GenericDaoImpl<Collaborator> implements CollaboratorDao{
+    @Autowired
+    private SessionFactory sessionFactory;
 
+    @Override
+    public void delete(Collaborator collaborator) {
+        Session session = sessionFactory.openSession();
+        // begin transaction
+        session.beginTransaction();
+        // detach collaborator from project_collaborator link table
+        session.createSQLQuery(
+                "DELETE project_collaborator " +
+                        "WHERE COLLABORATORS_ID = " + collaborator.getId())
+                .executeUpdate();
+
+        // delete collaborator from his table: delete, commit
+        session.delete(collaborator);
+        session.getTransaction().commit();
+        session.close();
+    }
 }

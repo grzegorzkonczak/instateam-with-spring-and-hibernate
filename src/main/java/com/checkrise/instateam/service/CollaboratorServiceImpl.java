@@ -26,4 +26,9 @@ public class CollaboratorServiceImpl implements CollaboratorService{
     public void save(Collaborator collaborator) {
         collaboratorDao.save(collaborator);
     }
+
+    @Override
+    public void delete(Collaborator collaborator) {
+        collaboratorDao.delete(collaborator);
+    }
 }
