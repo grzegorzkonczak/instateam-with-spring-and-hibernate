@@ -8,11 +8,19 @@
     <div class="container wrapper">
         <div class="project-list single">
             <div class="project">
+                <!-- Display project name -->
                 <h2 th:text="${project.name}"></h2>
-                <p th:text="${project.description}">Design and build a custom website</p>
+                <!-- Display project description -->
+                <p th:text="${project.description}"></p>
+                <!-- Display project status -->
                 <span th:class="|tag ${#strings.toLowerCase(project.status)}|"
                       th:text="${project.status.description}"></span>
+                <!-- Display project creation date -->
+                <time th:datetime="${#dates.format(project.creationDate,'yyyy-MM-dd')}"
+                      th:text="'Created at: ' + ${#dates.format(project.creationDate,'dd MMMM yyyy')}">
+                </time>
             </div>
+            <!-- Display project roles and collaborators -->
             <div class="roles-collaborators">
                 <h3>Roles &amp; Collaborators</h3>
                 <div th:each="role : ${project.rolesNeeded}" class="list-item">
@@ -29,6 +37,7 @@
                     </span>
                 </div>
             </div>
+            <!-- Display project controls - edit project/edit collaborators/delete project -->
             <div class="actions">
                 <a class="button" th:href="@{|/projects/${project.id}/edit|}">Edit Project</a>
                 <a class="button" th:href="@{|/projects/${project.id}/collaborators|}">Edit Collaborators</a>

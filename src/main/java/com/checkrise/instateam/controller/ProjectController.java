@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -72,6 +74,11 @@ public class ProjectController {
                     "Please select at least one role");
         }
 
+        // If project does not have creation date add it to project
+        if (project.getCreationDate() == null){
+            project.setCreationDate(Timestamp.valueOf(LocalDateTime.now()));
+        }
+
         List<Collaborator> newCollaborators;
         // If there are collaborators in project
         if (project.getCollaborators() != null) {
@@ -96,7 +103,7 @@ public class ProjectController {
         if (result.hasFieldErrors("name")
                 || result.hasFieldErrors("description")
                 || result.hasFieldErrors("status")
-                || result.hasFieldErrors("rolesNeeded")) {
+                || result.hasFieldErrors("rolesNeeded")){
             return "redirect:/";
         }
 
@@ -105,7 +112,7 @@ public class ProjectController {
 
         // if no errors - persist entry
         projectService.save(project);
-        return "redirect:/";
+        return "redirect:/projects/" + project.getId();
     }
 
     // View project details

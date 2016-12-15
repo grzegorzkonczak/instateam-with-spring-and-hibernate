@@ -101,7 +101,10 @@
                                th:value="${project.collaborators}"/>
                     </li>
                 </ul>
-
+                <!-- Set creation date to stay the same -->
+                <input type="hidden"
+                       th:field="*{creationDate}"
+                       th:value="${project.creationDate}"/>
                 <input type="submit" value="Save" class="button"/>
                 <a th:if="*{id} != null"
                    th:href="@{|/projects/*{id}|}" class="button button-secondary">Cancel</a>
