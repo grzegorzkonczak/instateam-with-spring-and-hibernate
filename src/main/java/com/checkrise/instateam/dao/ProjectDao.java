@@ -7,5 +7,5 @@ import java.util.List;
 
 // For now generic dao covers all needed methods (save, findById, findAll)
 public interface ProjectDao extends GenericDao<Project> {
-
+    void delete(Project project);
 }

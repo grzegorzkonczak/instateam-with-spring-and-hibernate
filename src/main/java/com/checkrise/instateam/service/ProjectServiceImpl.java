@@ -26,4 +26,9 @@ public class ProjectServiceImpl implements ProjectService{
     public void save(Project project) {
         projectDao.save(project);
     }
+
+    @Override
+    public void delete(Project project) {
+        projectDao.delete(project);
+    }
 }

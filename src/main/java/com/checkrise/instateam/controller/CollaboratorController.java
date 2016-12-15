@@ -30,8 +30,9 @@ public class CollaboratorController {
         // Create list of all existing collaborators from database
         List<Collaborator> collaborators = collaboratorService.findAll();
 
-        // Create list of all existing roles from database
+        // Create list of all existing roles from database and add it to model
         List<Role> roles = roleService.findAll();
+        model.addAttribute("roles", roles);
 
         // Add to model empty collaborator to create new collaborator by user
         model.addAttribute("collaborator", new Collaborator());

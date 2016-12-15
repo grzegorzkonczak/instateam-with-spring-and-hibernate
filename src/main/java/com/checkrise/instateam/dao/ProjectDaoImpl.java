@@ -7,11 +7,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import java.util.List;
-
 // Generic dao covers methods save and findAll, only difference is in findById (collection initialization)
 @Repository
 public class ProjectDaoImpl extends GenericDaoImpl<Project> implements ProjectDao {
@@ -34,6 +29,28 @@ public class ProjectDaoImpl extends GenericDaoImpl<Project> implements ProjectDa
         // Close session
         session.close();
         return project;
+    }
+
+    @Override
+    public void delete(Project project) {
+        Session session = sessionFactory.openSession();
+        // begin transaction
+        session.beginTransaction();
+        // detach project from project_role link table,
+        session.createSQLQuery(
+                "DELETE project_role " +
+                        "WHERE PROJECT_ID = " + project.getId())
+                .executeUpdate();
+        // detach project from project_collaborator link table
+        session.createSQLQuery(
+                "DELETE project_collaborator " +
+                        "WHERE PROJECT_ID = " + project.getId())
+                .executeUpdate();
+
+        // delete project from his table: delete, commit
+        session.delete(project);
+        session.getTransaction().commit();
+        session.close();
     }
 
 }

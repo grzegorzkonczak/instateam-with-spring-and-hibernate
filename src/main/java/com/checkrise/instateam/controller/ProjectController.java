@@ -72,18 +72,24 @@ public class ProjectController {
                     "Please select at least one role");
         }
 
-        // Get old collaborators from project and cross check
-        // with any changes to rolesNeeded in project
-        List<Collaborator> oldCollaborators = project.getCollaborators();
-        List<Collaborator> newCollaborators = new ArrayList<>();
+        List<Collaborator> newCollaborators;
+        // If there are collaborators in project
+        if (project.getCollaborators() != null) {
+            // Get old collaborators from project and cross check
+            // with any changes to rolesNeeded in project
+            List<Collaborator> oldCollaborators = project.getCollaborators();
+            newCollaborators = new ArrayList<>();
 
-        // check if collaborator from old list has role
-        // that exist in potentially modified rolesNeeded list
-        // if yes - add that collaborator to newCollaborators
-        for (Collaborator collaborator : oldCollaborators) {
-            if (rolesNeeded.contains(collaborator.getRole())){
-                newCollaborators.add(collaborator);
+            // check if collaborator from old list has role
+            // that exist in potentially modified rolesNeeded list
+            // if yes - add that collaborator to newCollaborators
+            for (Collaborator collaborator : oldCollaborators) {
+                if (rolesNeeded.contains(collaborator.getRole())) {
+                    newCollaborators.add(collaborator);
+                }
             }
+            // Assign new collaborators to project
+            project.setCollaborators(newCollaborators);
         }
 
         // if user entered invalid input do not persist entry
@@ -96,9 +102,6 @@ public class ProjectController {
 
         // add proper neededRoles to project
         project.setRolesNeeded(rolesNeeded);
-
-        // Assign new collaborators to project
-        project.setCollaborators(newCollaborators);
 
         // if no errors - persist entry
         projectService.save(project);
@@ -271,5 +274,17 @@ public class ProjectController {
         projectService.save(project);
 
         return "redirect:/projects/" + project.getId();
+    }
+
+    // Delete project
+    @RequestMapping("/projects/{projectId}/delete")
+    public String deleteProject(@PathVariable Long projectId, Model model) {
+        // Get project whose id is projectId
+        Project project = projectService.findById(projectId);
+
+        // Delete project from database
+        projectService.delete(project);
+
+        return "redirect:/";
     }
 }
