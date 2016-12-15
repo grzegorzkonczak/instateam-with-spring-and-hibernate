@@ -11,9 +11,10 @@
             <!-- Edit role from database -->
             <div class="actions">
                 <input type="text" th:field="*{name}"
-                       minlength="2" required="true"/>
+                       minlength="2" required="required"/>
                 <input type="hidden" th:field="*{id}" th:value="*{id}"/>
                 <input class="button" type="submit" value="Save"/>
+                <a class="button delete" th:href="@{|/roles/*{id}/delete|}">Delete</a>
                 <a th:href="@{/roles}" class="button button-secondary">Cancel</a>
             </div>
         </form>

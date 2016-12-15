@@ -130,7 +130,7 @@ nav ul li.selected a {
     margin: 0px 10px 0px 0px;
 }
 
-.button.collaborator-delete {
+.button.delete {
     width: 54px;
     margin: 0px 3px 0px 0px;
     background: #1919ff;

@@ -86,7 +86,7 @@ public class CollaboratorController {
         return "collaborator/details";
     }
 
-    // Delete project
+    // Delete collaborator
     @RequestMapping("/collaborators/{collaboratorId}/delete")
     public String deleteCollaborator(@PathVariable Long collaboratorId, Model model) {
         // Get collaborator whose id is collaboratorId

@@ -12,7 +12,7 @@
             <div class="actions add-new-collaborator">
                 <!-- Collaborators name -->
                 <input type="text" th:field="*{name}"
-                       minlength="2" required="true"/>
+                       minlength="2" required="required"/>
                 <!-- Collaborators role -->
                 <div class="custom-select">
                     <span class="dropdown-arrow"></span>
@@ -33,7 +33,7 @@
             </div>
             <div class="actions">
                 <input class="button collaborator-edit" type="submit" value="Save"/>
-                <a class="button collaborator-delete" th:href="@{|/collaborators/*{id}/delete|}">Delete</a>
+                <a class="button delete" th:href="@{|/collaborators/*{id}/delete|}">Delete</a>
                 <a th:href="@{/collaborators}" class="button button-secondary">Cancel</a>
             </div>
         </form>

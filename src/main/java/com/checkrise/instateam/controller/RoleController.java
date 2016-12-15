@@ -50,4 +50,16 @@ public class RoleController {
         model.addAttribute("role", role);
         return "role/details";
     }
+
+    // Delete role
+    @RequestMapping("/roles/{roleId}/delete")
+    public String deleteRole(@PathVariable Long roleId, Model model) {
+        // Get role whose id is roleId
+        Role role = roleService.findById(roleId);
+
+        // Delete role from database
+        roleService.delete(role);
+
+        return "redirect:/roles";
+    }
 }

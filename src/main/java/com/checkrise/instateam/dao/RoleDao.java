@@ -5,6 +5,7 @@ import com.checkrise.instateam.model.Role;
 
 import java.util.List;
 
-// For now generic dao covers all needed methods (save, findById, findAll)
+// Generic dao covers all basic methods (save, findById, findAll)
 public interface RoleDao extends GenericDao<Role> {
+    void delete(Role role);
 }
